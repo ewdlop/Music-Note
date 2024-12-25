@@ -1,0 +1,20 @@
+name: Use Shell Pipes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pipe-output:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Use Python Output in a Pipe
+    - name: Pipe Python Output to Another Command
+      run: |
+        python main.py | tee processed_output.txt | wc -l
