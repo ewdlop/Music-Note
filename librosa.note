@@ -1,0 +1,39 @@
+import librosa
+import librosa.display
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Load the audio file
+filename = 'jingle_bells.mp3'  # Replace with your audio file path
+y, sr = librosa.load(filename, sr=None)
+
+# Extract melody (pitch) information
+f0, voiced_flag, voiced_probs = librosa.pyin(y, fmin=librosa.note_to_hz('C2'), fmax=librosa.note_to_hz('C7'))
+
+# Plot the waveform
+plt.figure(figsize=(14, 5))
+librosa.display.waveshow(y, sr=sr)
+plt.title('Waveform of Jingle Bells')
+plt.xlabel('Time')
+plt.ylabel('Amplitude')
+plt.show()
+
+# Plot the pitch (melody)
+times = librosa.times_like(f0)
+plt.figure(figsize=(14, 5))
+plt.plot(times, f0, label='Pitch', color='r')
+plt.title('Melody (Pitch) of Jingle Bells')
+plt.xlabel('Time')
+plt.ylabel('Frequency (Hz)')
+plt.legend()
+plt.show()
+
+# Plot the spectrogram for a better understanding
+D = librosa.amplitude_to_db(np.abs(librosa.stft(y)), ref=np.max)
+plt.figure(figsize=(14, 5))
+librosa.display.specshow(D, sr=sr, x_axis='time', y_axis='log')
+plt.colorbar(format='%+2.0f dB')
+plt.title('Spectrogram of Jingle Bells')
+plt.xlabel('Time')
+plt.ylabel('Frequency')
+plt.show()
