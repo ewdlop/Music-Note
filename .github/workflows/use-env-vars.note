@@ -1,0 +1,28 @@
+name: Use Environment Variables
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pipe-output:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the repository code
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Capture Python Output in an Environment Variable
+    - name: Capture Python Output
+      id: capture-output
+      run: |
+        OUTPUT=$(python main.py)
+        echo "OUTPUT=$OUTPUT" >> $GITHUB_ENV
+
+    # Step 3: Use the Environment Variable
+    - name: Use Captured Output
+      run: echo "Captured output: $OUTPUT"
+      env:
+        OUTPUT: ${{ env.OUTPUT }}
